@@ -1,0 +1,9 @@
+{
+  "Author": "Bean",
+  "Name": "Stream Mode XIV",
+  "InternalName": "StreamModeXIV",
+  "Punchline": "Abbreviate every player name on screen while streaming.",
+  "Description": "Replaces player names (Bean Annyx -> B.A) in nameplates, target bars, social windows, adventure plates and optionally chat. Turns on/off automatically with OBS.",
+  "ApplicableVersion": "any",
+  "Tags": [ "stream", "privacy", "obs" ]
+}

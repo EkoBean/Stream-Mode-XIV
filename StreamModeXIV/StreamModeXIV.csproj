@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Dalamud.NET.Sdk/15.0.0">
+  <PropertyGroup>
+    <Version>0.1.0.0</Version>
+    <Description>Abbreviates player names everywhere in the UI while you stream, toggled automatically with OBS.</Description>
+    <TargetFramework>net10.0-windows8.0</TargetFramework>
+    <Platforms>x64</Platforms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>StreamModeXIV</RootNamespace>
+    <AssemblyName>StreamModeXIV</AssemblyName>
+    <!-- Keep the DLL at a single fixed path (bin\Debug or bin\Release) no matter
+         whether the solution or the project is built. Do not remove. -->
+    <AppendPlatformToOutputPath>false</AppendPlatformToOutputPath>
+  </PropertyGroup>
+</Project>
