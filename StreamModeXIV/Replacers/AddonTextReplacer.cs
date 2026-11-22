@@ -32,6 +32,8 @@ public sealed unsafe class AddonTextReplacer : IDisposable
         "ContentMemberList",
         "LookingForGroup",       // Party Finder list: only the recruiter field (whole-node name)
         "LookingForGroupDetail", // Party Finder detail
+        "_CharaSelectListMenu",  // login: character select list
+        "_CharaSelectInfo",      // login: selected character info panel
     ];
 
     /// <summary>Windows that mix player names with other text: only known player names are replaced.</summary>

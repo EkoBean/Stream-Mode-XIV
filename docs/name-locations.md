@@ -39,7 +39,7 @@
 | 市場板賣家／雇員 | `ItemSearchResult` | 混合型 | 已實作（雇員名不算玩家名，不會被改） |
 | 聊天視窗 | — | Chat | 已實作，預設關閉 |
 | 聊天泡泡（頭上對話框） | `_MiniTalk` | — | 未做，內容是對話不是名字 |
-| 角色選擇畫面 | `_CharaSelectListMenu` | — | 未做，登入前 plugin 通常不需要 |
+| 角色選擇畫面 | `_CharaSelectListMenu`, `_CharaSelectInfo` | 名單型 | 已實作（登入確認的 `SelectYesno` 走已知名字） |
 
 ## 注意
 
