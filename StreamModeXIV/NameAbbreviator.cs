@@ -44,17 +44,26 @@ public static partial class NameAbbreviator
     }
 
     /// <summary>
-    /// Replace anything shaped like "Firstname Lastname". Only use inside windows whose
-    /// text is (almost) purely player names, e.g. the friend list. Matches are learned.
+    /// Game-authored strings (UI labels, tab names, duties, places, titles). These are never
+    /// treated as player names even if they look like "Friend List".
     /// </summary>
-    public static string ReplacePattern(string text)
+    public static volatile HashSet<string> GameText = new(StringComparer.Ordinal);
+
+    /// <summary>
+    /// For name-list windows: abbreviate a text piece only if the WHOLE piece is a name
+    /// (e.g. the recruiter field). Anything else (descriptions, tags, duty names) is left alone
+    /// completely. Matches are learned.
+    /// </summary>
+    public static string ReplaceWholeName(string text)
     {
         if (string.IsNullOrEmpty(text)) return text;
-        text = NamePattern().Replace(text, m =>
+        var trimmed = text.Trim();
+        var m = NamePattern().Match(trimmed);
+        if (m.Success && m.Length == trimmed.Length && !GameText.Contains(trimmed))
         {
-            Learn(m.Value);
-            return Abbreviate(m.Value);
-        });
-        return ReplaceKnown(text);
+            Learn(trimmed);
+            return text.Replace(trimmed, Abbreviate(trimmed), StringComparison.Ordinal);
+        }
+        return text; // descriptions, duty names, tags: untouched
     }
 }

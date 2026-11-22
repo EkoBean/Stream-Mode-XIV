@@ -20,6 +20,7 @@ public sealed class Plugin : IDalamudPlugin
     [PluginService] public static INamePlateGui NamePlateGui { get; private set; } = null!;
     [PluginService] public static IAddonLifecycle AddonLifecycle { get; private set; } = null!;
     [PluginService] public static IGameGui GameGui { get; private set; } = null!;
+    [PluginService] public static IDataManager DataManager { get; private set; } = null!;
     [PluginService] public static IPluginLog Log { get; private set; } = null!;
 
     private const string Command = "/streammode";
@@ -39,6 +40,7 @@ public sealed class Plugin : IDalamudPlugin
     {
         Config = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
 
+        GameTextLoader.LoadAsync();
         namePlates = new NamePlateReplacer();
         chat = new ChatReplacer();
         addons = new AddonTextReplacer();

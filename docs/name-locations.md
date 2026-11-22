@@ -5,7 +5,7 @@
 - **NamePlate**：`INamePlateGui.OnNamePlateUpdate`，直接改 handler 的 `Name`。最穩定。
 - **Chat**：`IChatGui.ChatMessage`，改 `Sender` / `Message` 的 TextPayload（使用者可在設定中開關）。
 - **Addon**：`IAddonLifecycle` PreDraw，走訪視窗的 AtkTextNode 改字。
-  - **名單型**：視窗內容幾乎都是人名，任何「Firstname Lastname」格式都縮寫，並記入已知名單。
+  - **名單型**：只有「整段文字剛好就是一個名字」（例如招募者欄位、好友名）才縮寫，並記入已知名單。說明、標籤、副本名等較長文字完全不動。遊戲本身的文字（Addon 介面字串如分頁名、副本名、地名、稱號）從遊戲資料表讀出並排除，所以「Friend List」這類分頁名不會被縮寫。
   - **混合型**：只替換「已知玩家名」（從 ObjectTable、PartyList、名單型視窗、聊天中蒐集），避免把 Boss 名稱或「Critical Hit」這類兩個大寫單字的文字也縮寫掉。
 
 | 位置 | Addon 名稱 | 方式 | 狀態 |
@@ -29,7 +29,7 @@
 | Adventurer Plate | `CharaCard` | 混合型 | 已實作 |
 | Character 視窗（名字、稱號） | `Character` | 混合型 | 已實作 |
 | Examine | `CharacterInspect` | 混合型 | 已實作 |
-| Party Finder 招募者 | `LookingForGroup*` | 混合型 | 已實作 |
+| Party Finder 招募者 | `LookingForGroup`, `LookingForGroupDetail` | 名單型（只換招募者欄位） | 已實作 |
 | Ready Check / Trade / 右鍵選單標題 | `ReadyCheck`, `Trade`, `ContextMenu` | 混合型 | 已實作 |
 | NPC 對話中叫你的名字 | `Talk`, `SelectString`, `SelectYesno` | 混合型 | 已實作 |
 | 小地圖滑鼠提示、Tooltip | `_NaviMap`, `Tooltip` | 混合型 | 已實作 |

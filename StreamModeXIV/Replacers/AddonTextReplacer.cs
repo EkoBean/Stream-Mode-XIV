@@ -8,7 +8,7 @@ namespace StreamModeXIV.Replacers;
 
 /// <summary>
 /// Rewrites text nodes of game windows right before they are drawn.
-/// "Name-list" windows get every Firstname-Lastname abbreviated; "mixed" windows
+/// "Name-list" windows abbreviate text pieces that are entirely a name (labels/descriptions untouched); "mixed" windows
 /// only get names we already know belong to players (so boss / item names survive).
 /// </summary>
 public sealed unsafe class AddonTextReplacer : IDisposable
@@ -33,6 +33,8 @@ public sealed unsafe class AddonTextReplacer : IDisposable
         "_AllianceList1",
         "_AllianceList2",
         "ContentMemberList",
+        "LookingForGroup",       // Party Finder list: only the recruiter field (whole-node name)
+        "LookingForGroupDetail", // Party Finder detail
     ];
 
     /// <summary>Windows that mix player names with other text: only known player names are replaced.</summary>
@@ -48,8 +50,6 @@ public sealed unsafe class AddonTextReplacer : IDisposable
         "CharacterInspect",            // Examine
         "FreeCompany",                 // FC main window (master name)
         "FreeCompanyProfile",
-        "LookingForGroup",             // Party Finder list (recruiter)
-        "LookingForGroupDetail",
         "LookingForGroupCondition",
         "ReadyCheck",
         "Trade",
@@ -134,7 +134,7 @@ public sealed unsafe class AddonTextReplacer : IDisposable
         foreach (var p in se.Payloads)
         {
             if (p is not TextPayload tp || string.IsNullOrEmpty(tp.Text)) continue;
-            var replaced = pattern ? NameAbbreviator.ReplacePattern(tp.Text) : NameAbbreviator.ReplaceKnown(tp.Text);
+            var replaced = pattern ? NameAbbreviator.ReplaceWholeName(tp.Text) : NameAbbreviator.ReplaceKnown(tp.Text);
             if (replaced == tp.Text) continue;
             tp.Text = replaced;
             changed = true;
