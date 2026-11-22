@@ -16,7 +16,6 @@ public sealed unsafe class AddonTextReplacer : IDisposable
     /// <summary>Windows whose text is essentially a list of player names.</summary>
     public static readonly string[] NameListAddons =
     [
-        "_PartyList",            // party list (game has its own initials option; this makes it complete)
         "Social",                // Social window frame
         "PartyMemberList",       // Social > Party Members
         "FriendList",            // Social > Friend List
@@ -30,8 +29,6 @@ public sealed unsafe class AddonTextReplacer : IDisposable
         "CrossWorldLinkshell",   // Cross-world Linkshells
         "CircleList",            // Fellowships member list
         "CircleBook",
-        "_AllianceList1",
-        "_AllianceList2",
         "ContentMemberList",
         "LookingForGroup",       // Party Finder list: only the recruiter field (whole-node name)
         "LookingForGroupDetail", // Party Finder detail
@@ -40,6 +37,9 @@ public sealed unsafe class AddonTextReplacer : IDisposable
     /// <summary>Windows that mix player names with other text: only known player names are replaced.</summary>
     public static readonly string[] MixedAddons =
     [
+        "_PartyList",                  // names come from IPartyList, text also holds level etc.
+        "_AllianceList1",
+        "_AllianceList2",
         "_TargetInfo",                 // target bar + target-of-target
         "_TargetInfoMainTarget",       // split target bar
         "_TargetInfoCastBar",

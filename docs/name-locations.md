@@ -11,8 +11,8 @@
 | 位置 | Addon 名稱 | 方式 | 狀態 |
 |---|---|---|---|
 | 頭上名牌（自己與其他玩家） | — | NamePlate | 已實作 |
-| Party List | `_PartyList` | 名單型 | 已實作 |
-| Alliance List | `_AllianceList1/2` | 名單型 | 已實作 |
+| Party List | `_PartyList` | 混合型 | 已實作 |
+| Alliance List | `_AllianceList1/2` | 混合型 | 已實作 |
 | Social › Party Members | `PartyMemberList` | 名單型 | 已實作 |
 | Social › Friend List | `FriendList` | 名單型 | 已實作 |
 | Social › Player Search 結果 | `SocialList` | 名單型 | 已實作 |
