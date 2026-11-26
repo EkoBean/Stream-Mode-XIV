@@ -13,7 +13,8 @@ public static unsafe class PartySource
     public static void Learn()
     {
         foreach (var m in Plugin.PartyList)
-            NameAbbreviator.Learn(m.Name.TextValue);
+            if (m.ContentId != 0) // NPC members have no ContentId
+                NameAbbreviator.Learn(m.Name.TextValue);
 
         // Party list HUD: what _PartyList actually shows (normal + cross-world).
         var hud = AgentHUD.Instance();
@@ -21,7 +22,10 @@ public static unsafe class PartySource
         {
             for (var i = 0; i < hud->PartyMemberCount && i < hud->PartyMembers.Length; i++)
             {
-                var ptr = hud->PartyMembers[i].Name.Value;
+                ref var member = ref hud->PartyMembers[i];
+                // Trust / Duty Support / Squadron NPCs have no ContentId: never treat them as players.
+                if (member.ContentId == 0) continue;
+                var ptr = member.Name.Value;
                 if (ptr == null) continue;
                 var bytes = System.Runtime.InteropServices.MemoryMarshal.CreateReadOnlySpanFromNullTerminated(ptr);
                 NameAbbreviator.Learn(Dalamud.Game.Text.SeStringHandling.SeString.Parse(bytes).TextValue);
