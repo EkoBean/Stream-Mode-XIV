@@ -22,8 +22,11 @@ public sealed class ToggleOverlay(Plugin plugin)
                     ImGuiWindowFlags.NoDocking;
         if (!cfg.ToggleDraggable) flags |= ImGuiWindowFlags.NoMove;
 
-        // While dragging, let ImGui own the position; otherwise force it from config.
-        ImGui.SetNextWindowPos(cfg.TogglePosition, cfg.ToggleDraggable ? ImGuiCond.Appearing : ImGuiCond.Always);
+        // Position is stored relative to the game window, so it scales with window resizes.
+        var vp = ImGui.GetMainViewport();
+        var target = cfg.GetTogglePixel(vp.Pos, vp.Size);
+        var dragging = cfg.ToggleDraggable && ImGui.IsMouseDown(ImGuiMouseButton.Left);
+        ImGui.SetNextWindowPos(target, dragging ? ImGuiCond.Appearing : ImGuiCond.Always);
         ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(4, 2));
         if (ImGui.Begin("##StreamModeXIVToggle", flags))
         {
@@ -45,14 +48,11 @@ public sealed class ToggleOverlay(Plugin plugin)
             var knobX = on ? p.X + TrackW - r : p.X + r;
             dl.AddCircleFilled(new Vector2(knobX, p.Y + r), r - 2, ImGui.GetColorU32(new Vector4(1, 1, 1, 1)));
 
-            if (cfg.ToggleDraggable && !ImGui.IsMouseDown(ImGuiMouseButton.Left))
+            if (dragging)
             {
                 var pos = ImGui.GetWindowPos();
-                if (Vector2.DistanceSquared(pos, cfg.TogglePosition) > 0.25f)
-                {
-                    cfg.TogglePosition = pos;
-                    cfg.Save();
-                }
+                if (Vector2.DistanceSquared(pos, target) > 0.25f)
+                    cfg.SetTogglePixel(pos, vp.Pos, vp.Size);
             }
         }
         ImGui.End();

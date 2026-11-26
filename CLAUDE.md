@@ -7,10 +7,12 @@ Dalamud plugin (Dalamud.NET.Sdk 15, net10.0-windows) that abbreviates player nam
 
 ## Where settings live (one place only)
 - Plugin config: `%APPDATA%\XIVLauncher\pluginConfigs\StreamModeXIV.json` via `SavePluginConfig`. Same file for dev and installed builds.
+- Toggle position is stored as `TogglePositionRatio` (0..1 of the game window) so it follows window resizes; `TogglePosition` (pixels) is legacy, read once to migrate.
 - The on-screen toggle uses `ImGuiWindowFlags.NoSavedSettings`, so its position is never written to an imgui `.ini`; config is the only source of truth. Do not add other ini/config files.
 
 ## Layout
 - `Plugin.cs` services, command `/streammode [on|off|toggle]`, `SetStreamMode` = single switch path.
 - `ObsWatcher.cs` polls for obs64/obs32 processes.
 - `Windows/ToggleOverlay.cs` the bare "Stream Mode (O  )" switch; `Windows/SettingsWindow.cs`.
-- `Replacers/` NamePlate, Chat, AddonText (addon lists + rules). See `docs/name-locations.md`.
+- `PartySource.cs` learns party names from IPartyList, AgentHUD and InfoProxyCrossRealm.
+- `Replacers/` NamePlate, Chat, Toast, AddonText (addon lists + rules). See `docs/name-locations.md`.

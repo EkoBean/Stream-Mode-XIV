@@ -33,13 +33,14 @@ public sealed class SettingsWindow : Window
         var drag = cfg.ToggleDraggable;
         if (ImGui.Checkbox("Drag toggle with mouse", ref drag)) { cfg.ToggleDraggable = drag; cfg.Save(); }
 
-        var pos = cfg.TogglePosition;
+        // Shown in pixels of the current game window; stored as a ratio so it follows resizes.
+        var vp = ImGui.GetMainViewport();
+        var pos = cfg.GetTogglePixel(vp.Pos, vp.Size) - vp.Pos;
         ImGui.SetNextItemWidth(200);
-        if (ImGui.DragFloat2("Position (X, Y)", ref pos, 1f, 0f, 10000f, "%.0f"))
-        {
-            cfg.TogglePosition = new Vector2(MathF.Round(pos.X), MathF.Round(pos.Y));
-            cfg.Save();
-        }
+        if (ImGui.DragFloat2("Position (X, Y)", ref pos, 1f, 0f, MathF.Max(vp.Size.X, vp.Size.Y), "%.0f"))
+            cfg.SetTogglePixel(new Vector2(MathF.Round(pos.X), MathF.Round(pos.Y)) + vp.Pos, vp.Pos, vp.Size);
+        ImGui.SameLine();
+        ImGui.TextDisabled($"({cfg.TogglePositionRatio.X:P0}, {cfg.TogglePositionRatio.Y:P0} of window)");
 
         ImGui.Separator();
         ImGui.TextUnformatted("OBS");

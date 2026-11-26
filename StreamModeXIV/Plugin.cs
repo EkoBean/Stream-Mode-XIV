@@ -21,6 +21,7 @@ public sealed class Plugin : IDalamudPlugin
     [PluginService] public static IAddonLifecycle AddonLifecycle { get; private set; } = null!;
     [PluginService] public static IGameGui GameGui { get; private set; } = null!;
     [PluginService] public static IDataManager DataManager { get; private set; } = null!;
+    [PluginService] public static IToastGui ToastGui { get; private set; } = null!;
     [PluginService] public static IPluginLog Log { get; private set; } = null!;
 
     private const string Command = "/streammode";
@@ -33,6 +34,7 @@ public sealed class Plugin : IDalamudPlugin
     private readonly ObsWatcher obs;
     private readonly NamePlateReplacer namePlates;
     private readonly ChatReplacer chat;
+    private readonly ToastReplacer toasts;
     private readonly AddonTextReplacer addons;
     private DateTime nextScan = DateTime.MinValue;
 
@@ -43,6 +45,7 @@ public sealed class Plugin : IDalamudPlugin
         GameTextLoader.LoadAsync();
         namePlates = new NamePlateReplacer();
         chat = new ChatReplacer();
+        toasts = new ToastReplacer();
         addons = new AddonTextReplacer();
 
         settingsWindow = new SettingsWindow(this);
@@ -116,8 +119,7 @@ public sealed class Plugin : IDalamudPlugin
         foreach (var obj in ObjectTable)
             if (obj is IPlayerCharacter pc)
                 NameAbbreviator.Learn(pc.Name.TextValue);
-        foreach (var member in PartyList)
-            NameAbbreviator.Learn(member.Name.TextValue);
+        PartySource.Learn();
     }
 
     private void DrawUi()
@@ -138,6 +140,7 @@ public sealed class Plugin : IDalamudPlugin
         addons.RestoreAll();
         addons.Dispose();
         chat.Dispose();
+        toasts.Dispose();
         namePlates.Dispose();
         NamePlateGui.RequestRedraw();
         windows.RemoveAllWindows();
